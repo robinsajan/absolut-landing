@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AbsoluTrip — Trip Planning, Levelled Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue: #3B5BDB;
+            --blue-dark: #2f4bbf;
+            --lime: #C8FF00;
+            --purple: #C084FC;
+            --dark: #1a1a1a;
+            --bg: #F5F3EE;
+            --border: #e8e4da;
+            --gray: #666;
+            --light-gray: #aaa;
+            --muted: #888;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg);
+            font-family: 'Archivo', sans-serif;
+            display: flex;
+            flex-direction: column;
+            color: var(--dark);
+        }
+
+        /* NAV */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 48px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        .logo-text {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.2rem;
+            color: var(--dark);
+            letter-spacing: -0.02em;
+        }
+
+        .badge-coming {
+            background: var(--lime);
+            color: var(--dark);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        /* HERO */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 64px 24px;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+
+        .star {
+            color: var(--blue);
+            font-size: 1.5rem;
+            user-select: none;
+        }
+
+        .hero-eyebrow span.label {
+            color: var(--muted);
+            font-size: 0.875rem;
+        }
+
+        h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(2.8rem, 8vw, 6rem);
+            line-height: 1.0;
+            color: var(--dark);
+            max-width: 760px;
+            margin-bottom: 16px;
+        }
+
+        .highlight {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            padding: 0 16px;
+            border-radius: 16px;
+            line-height: 1.2;
+        }
+
+        .hero-sub {
+            color: var(--gray);
+            max-width: 440px;
+            margin: 16px auto 40px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* EMAIL FORM */
+        .email-form {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            max-width: 460px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .email-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 16px 20px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-family: 'Archivo', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+            color: var(--dark);
+        }
+
+        .email-input:focus {
+            border-color: var(--blue);
+        }
+
+        .email-input::placeholder {
+            color: #bbb;
+        }
+
+        .notify-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--blue);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            font-family: 'Archivo', sans-serif;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .notify-btn:hover {
+            background: var(--blue-dark);
+        }
+
+        .notify-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .success-msg {
+            display: none;
+            background: var(--lime);
+            color: var(--dark);
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .no-spam {
+            color: var(--light-gray);
+            font-size: 0.75rem;
+            margin-top: 12px;
+        }
+
+        /* FEATURE PILLS */
+        .pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 40px;
+            max-width: 520px;
+        }
+
+        .pill {
+            background: white;
+            border: 1px solid var(--border);
+            color: #555;
+            font-size: 0.75rem;
+            padding: 8px 16px;
+            border-radius: 999px;
+        }
+
+        /* BENTO */
+        .bento-section {
+            padding: 0 48px 64px;
+            max-width: 1040px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .bento-label {
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .bento-card {
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 140px;
+            justify-content: space-between;
+        }
+
+        .bento-card svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .bento-card .card-title {
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .bento-card .card-desc {
+            font-size: 0.75rem;
+            margin-top: 4px;
+            opacity: 0.7;
+        }
+
+        .card-blue {
+            background: #3B5BDB;
+            color: white;
+        }
+
+        .card-blue .card-icon {
+            color: #C8FF00;
+        }
+
+        .card-lime {
+            background: #C8FF00;
+            color: #1a1a1a;
+        }
+
+        .card-lime .card-icon {
+            color: #3B5BDB;
+        }
+
+        .card-dark {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .card-dark .card-icon {
+            color: #C084FC;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            max-width: 1040px;
+            margin: 0 auto;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-logo-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-icon svg {
+            width: 10px;
+            height: 10px;
+            color: white;
+        }
+
+        .footer-logo-text {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 0.75rem;
+            color: #555;
+        }
+
+        .footer-copy {
+            color: var(--light-gray);
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 24px;
+            }
+
+            .bento-section {
+                padding: 0 24px 48px;
+            }
+
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            footer {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .email-form {
+                flex-direction: column;
+            }
+
+            .email-input,
+            .notify-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a class="logo" href="#">
+            <div class="logo-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+            </div>
+            <span class="logo-text">AbsoluTrip</span>
+        </a>
+        <span class="badge-coming">coming soon ✳</span>
+    </nav>
+
+    <main>
+        <div class="hero-eyebrow">
+            <span class="star">✳</span>
+            <span class="label">we're building something exciting</span>
+            <span class="star">✳</span>
+        </div>
+
+        <h1>
+            TRIP PLANNING,
+            <span class="highlight">levelled</span>
+            up.
+        </h1>
+
+        <p class="hero-sub">
+            AbsoluTrip is the group travel app that lets you compare options, track budgets, and settle expenses — all
+            in one place. Launching soon.
+        </p>
+
+        <div class="email-form" id="formWrapper">
+            <input class="email-input" type="email" id="emailInput" placeholder="your@email.com" />
+            <button class="notify-btn" onclick="handleNotify()">
+                notify me
+            </button>
+        </div>
+
+        <div class="success-msg" id="successMsg">
+            ✅ You're on the list! We'll let you know when we launch.
+        </div>
+
+        <p class="no-spam">No spam. Just one email when we're live.</p>
+
+        <div class="pills">
+            <span class="pill">Group trip planning</span>
+            <span class="pill">Smart voting</span>
+            <span class="pill">Budget tracking</span>
+            <span class="pill">Expense splitting</span>
+        </div>
+    </main>
+
+    <section class="bento-section">
+        <p class="bento-label">what's coming</p>
+        <div class="bento-grid">
+
+            <div class="bento-card card-blue">
+                <div class="card-icon"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path
+                            d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg> </div>
+                <div>
+                    <p class="card-title">Trip Launchpad</p>
+                    <p class="card-desc">Create group trips in seconds — no account needed.</p>
+                </div>
+            </div>
+
+            <div class="bento-card card-lime">
+                <div class="card-icon"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg> </div>
+                <div>
+                    <p class="card-title">Comparison Hub</p>
+                    <p class="card-desc">Vote on stays & activities with your group side-by-side.</p>
+                </div>
+            </div>
+
+            <div class="bento-card card-dark">
+                <div class="card-icon"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                        <line x1="1" y1="10" x2="23" y2="10" />
+                    </svg> </div>
+                <div>
+                    <p class="card-title">Budget & Settle</p>
+                    <p class="card-desc">Track expenses and settle up instantly — zero drama.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">
+            <div class="footer-logo-icon"></div>
+            <span class="footer-logo-text">AbsoluTrip</span>
+        </div>
+        <p class="footer-copy">© 2026 AbsoluTrip · Built for group travellers</p>
+    </footer>
+
+    <script>
+        function handleNotify() {
+            const input = document.getElementById('emailInput');
+            const formWrapper = document.getElementById('formWrapper');
+            const successMsg = document.getElementById('successMsg');
+
+            if (!input.value || !input.validity.valid) {
+                input.focus();
+                return;
+            }
+
+            formWrapper.style.display = 'none';
+            successMsg.style.display = 'flex';
+        }
+
+        document.getElementById('emailInput').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') handleNotify();
+        });
+    </script>
+
+</body>
+
+</html>
